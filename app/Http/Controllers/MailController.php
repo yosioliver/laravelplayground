@@ -20,6 +20,6 @@ class MailController extends Controller
         ];
 
         Mail::to('sarif.onwork@gmail.com')->send(new MyTestEmail($mailData));
-        dd("Email is sent successfully.");
+        dd("Email is sent success.");
     }
 }
