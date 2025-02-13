@@ -14,6 +14,10 @@ class FormController extends Controller
 
     public function store(Request $request)
     {
+        $form = $request->validate([
+            'language' => 'required',
+            'options' => 'required',
+        ]);
         $arrVar = array();
         foreach ($request->input('options') as $options) {
             $form = new Form();
