@@ -72,7 +72,6 @@
     <div style="height: 100vh; width: 100vw" id="mapContainer" class="container-1">
         <input placeholder="Search for a Place or an Address." type="text" name="search" id="search"
             value="Jakarta, Indonesia" autocomplete="off" onkeyup="autosuggest(this)" autofocus />
-        <i class="fa fa-search fa-search-custom" aria-hidden="true"></i>
         <div class="dropdown">
             <ul id="list"></ul>
         </div>
@@ -107,6 +106,8 @@
 
     // Create the default UI components
     var ui = H.ui.UI.createDefault(map, defaultLayers);
+    // Add the click event listener.
+    addDraggableMarker(map, behavior);
     // Now use the map as required...
     window.onload = function () {
       moveToJakarta(map);
@@ -162,32 +163,33 @@
      *                                         default interactions for pan/zoom
      */
     function addDraggableMarker(map, behavior) {
-    var marker = new H.map.Marker(
-        {
-        // mark the object as volatile for the smooth dragging
-        volatility: true,
-        }
-    );
-    // Ensure that the marker can receive drag events
-    marker.draggable = true;
-    map.addObject(marker);
+        var marker = new H.map.Marker(
+            { lat: -6.200000, lng: 106.816666 },
+            {
+            // mark the object as volatile for the smooth dragging
+            volatility: true,
+            }
+        );
+        // Ensure that the marker can receive drag events
+        marker.draggable = true;
+        map.addObject(marker);
 
-    // disable the default draggability of the underlying map
-    // and calculate the offset between mouse and target's position
-    // when starting to drag a marker object:
-    map.addEventListener(
-        "dragstart",
-        function (ev) {
-        var target = ev.target,
-            pointer = ev.currentPointer;
-        if (target instanceof H.map.Marker) {
-            var targetPosition = map.geoToScreen(target.getGeometry());
-            target["offset"] = new H.math.Point(
-            pointer.viewportX - targetPosition.x,
-            pointer.viewportY - targetPosition.y
-            );
-            behavior.disable();
-        }
+        // disable the default draggability of the underlying map
+        // and calculate the offset between mouse and target's position
+        // when starting to drag a marker object:
+        map.addEventListener(
+            "dragstart",
+            function (ev) {
+            var target = ev.target,
+                pointer = ev.currentPointer;
+            if (target instanceof H.map.Marker) {
+                var targetPosition = map.geoToScreen(target.getGeometry());
+                target["offset"] = new H.math.Point(
+                pointer.viewportX - targetPosition.x,
+                pointer.viewportY - targetPosition.y
+                );
+                behavior.disable();
+            }
         },
         false
     );
