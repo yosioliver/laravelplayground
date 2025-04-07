@@ -47,7 +47,8 @@
 
         li {
             list-style-type: none;
-            height: 12px;
+            height: auto;
+            width: auto;
             padding: 12px;
             box-shadow: rgb(158, 202, 237) 0px 0px 4px;
             display: list-item;
@@ -63,13 +64,6 @@
         #list {
             cursor: pointer;
         }
-
-        .fa-search-custom {
-            position: absolute;
-            left: 65%;
-            top: 123px;
-            z-index: 99999;
-        }
     </style>
     <title>Geocoding Demo</title>
 </head>
@@ -77,7 +71,7 @@
 <body>
     <div style="height: 100vh; width: 100vw" id="mapContainer" class="container-1">
         <input placeholder="Search for a Place or an Address." type="text" name="search" id="search"
-            value="Berlin, Germany" autocomplete="off" onkeyup="autosuggest(this)" autofocus />
+            value="Jakarta, Indonesia" autocomplete="off" onkeyup="autosuggest(this)" autofocus />
         <i class="fa fa-search fa-search-custom" aria-hidden="true"></i>
         <div class="dropdown">
             <ul id="list"></ul>
@@ -86,8 +80,8 @@
 </body>
 <script>
     const personalApiKey = `N3N8X01cQGP_lvkAzczCMTo3-RqU6aMv_iC8bRq1IPk`; // Your personal API key
-    function moveMapToBerlin(map) {
-      map.setCenter({ lat: 52.5159, lng: 13.3777 });
+    function moveToJakarta(map) {
+      map.setCenter({ lat: -6.200000, lng: 106.816666 });
       map.setZoom(10);
     }
     var platform = new H.service.Platform({
@@ -100,8 +94,6 @@
       document.getElementById("mapContainer"),
       defaultLayers.vector.normal.map,
       {
-        center: { lat: 50, lng: 5 },
-        zoom: 4,
         pixelRatio: window.devicePixelRatio || 1,
       }
     );
@@ -117,7 +109,7 @@
     var ui = H.ui.UI.createDefault(map, defaultLayers);
     // Now use the map as required...
     window.onload = function () {
-      moveMapToBerlin(map);
+      moveToJakarta(map);
       getDefaultLocation();
     };
     const autosuggest = (e) => {
@@ -146,9 +138,9 @@
     };
     // to get default location after loading the page
     function getDefaultLocation() {
-      var lat = 52.5159;
-      var lng = 13.3777;
-      var title = "Berlin, Germany";
+      var lat = -6.200000;
+      var lng = 106.816666;
+      var title = "Jakarta, Indonesia";
       addMarkerToMap(lat, lng, title);
     }
     // adding marker to map
@@ -160,6 +152,78 @@
       document.getElementById("list").innerHTML = ``;
       map.setCenter({ lat, lng }, true);
     };
+
+    /**
+     * Adds a  draggable marker to the map..
+     *
+     * @param {H.Map} map                      A HERE Map instance within the
+     *                                         application
+     * @param {H.mapevents.Behavior} behavior  Behavior implements
+     *                                         default interactions for pan/zoom
+     */
+    function addDraggableMarker(map, behavior) {
+    var marker = new H.map.Marker(
+        {
+        // mark the object as volatile for the smooth dragging
+        volatility: true,
+        }
+    );
+    // Ensure that the marker can receive drag events
+    marker.draggable = true;
+    map.addObject(marker);
+
+    // disable the default draggability of the underlying map
+    // and calculate the offset between mouse and target's position
+    // when starting to drag a marker object:
+    map.addEventListener(
+        "dragstart",
+        function (ev) {
+        var target = ev.target,
+            pointer = ev.currentPointer;
+        if (target instanceof H.map.Marker) {
+            var targetPosition = map.geoToScreen(target.getGeometry());
+            target["offset"] = new H.math.Point(
+            pointer.viewportX - targetPosition.x,
+            pointer.viewportY - targetPosition.y
+            );
+            behavior.disable();
+        }
+        },
+        false
+    );
+
+    // re-enable the default draggability of the underlying map
+    // when dragging has completed
+    map.addEventListener(
+        "dragend",
+        function (ev) {
+        var target = ev.target;
+        if (target instanceof H.map.Marker) {
+            behavior.enable();
+        }
+        },
+        false
+    );
+
+    // Listen to the drag event and move the position of the marker
+    // as necessary
+    map.addEventListener(
+        "drag",
+        function (ev) {
+        var target = ev.target,
+            pointer = ev.currentPointer;
+        if (target instanceof H.map.Marker) {
+            target.setGeometry(
+            map.screenToGeo(
+                pointer.viewportX - target["offset"].x,
+                pointer.viewportY - target["offset"].y
+            )
+            );
+        }
+        },
+        false
+    );
+    }
 </script>
 
 </html>
