@@ -106,8 +106,6 @@
 
     // Create the default UI components
     var ui = H.ui.UI.createDefault(map, defaultLayers);
-    // Add the click event listener.
-    addDraggableMarker(map, behavior);
     // Now use the map as required...
     window.onload = function () {
       moveToJakarta(map);
@@ -148,10 +146,9 @@
     const addMarkerToMap = (lat, lng, title) => {
       map.removeObjects(map.getObjects());
       document.getElementById("search").value = title;
-      var selectedLocationMarker = new H.map.Marker({ lat, lng });
-      map.addObject(selectedLocationMarker);
       document.getElementById("list").innerHTML = ``;
-      map.setCenter({ lat, lng }, true);
+      // Add the click event listener.
+      addDraggableMarker(map, behavior, lat, lng);
     };
 
     /**
@@ -162,17 +159,18 @@
      * @param {H.mapevents.Behavior} behavior  Behavior implements
      *                                         default interactions for pan/zoom
      */
-    function addDraggableMarker(map, behavior) {
+    function addDraggableMarker(map, behavior, lat, lng) {
         var marker = new H.map.Marker(
-            { lat: -6.200000, lng: 106.816666 },
+            { lat: lat, lng: lng },
             {
-            // mark the object as volatile for the smooth dragging
-            volatility: true,
+                // mark the object as volatile for the smooth dragging
+                volatility: true,
             }
         );
         // Ensure that the marker can receive drag events
         marker.draggable = true;
         map.addObject(marker);
+        map.setCenter({ lat, lng }, true);
 
         // disable the default draggability of the underlying map
         // and calculate the offset between mouse and target's position
@@ -200,9 +198,10 @@
         "dragend",
         function (ev) {
         var target = ev.target;
-        if (target instanceof H.map.Marker) {
-            behavior.enable();
-        }
+            if (target instanceof H.map.Marker) {
+                behavior.enable();
+                console.log(target.im)
+            }
         },
         false
     );
