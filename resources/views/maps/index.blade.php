@@ -200,7 +200,7 @@
         var target = ev.target;
             if (target instanceof H.map.Marker) {
                 behavior.enable();
-                console.log(target.im)
+                localStorage.setItem('longLat', Object.values(target.im))
             }
         },
         false
