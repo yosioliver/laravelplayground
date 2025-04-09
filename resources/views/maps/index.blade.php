@@ -78,7 +78,7 @@
     </div>
 </body>
 <script>
-    const personalApiKey = `N3N8X01cQGP_lvkAzczCMTo3-RqU6aMv_iC8bRq1IPk`; // Your personal API key
+    const personalApiKey = {{ env('HERE_MAP_API') }};
     function moveToJakarta(map) {
       map.setCenter({ lat: -6.200000, lng: 106.816666 });
       map.setZoom(10);
