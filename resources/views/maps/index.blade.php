@@ -160,7 +160,6 @@
       var lat = -6.200000;
       var lng = 106.816666;
       var title = "Jakarta, Indonesia";
-      addMarkerToMap(lat, lng, title);
     }
     // adding marker to map
     const addMarkerToMap = (lat, lng, title) => {
@@ -168,7 +167,7 @@
       document.getElementById("search").value = title;
       document.getElementById("list").innerHTML = ``;
       // Add the click event listener.
-      addDraggableMarker(map, behavior, lat, lng);
+      addDraggableMarker(map, behavior, lat, lng, title);
     };
 
     /**
@@ -179,7 +178,7 @@
      * @param {H.mapevents.Behavior} behavior  Behavior implements
      *                                         default interactions for pan/zoom
      */
-    function addDraggableMarker(map, behavior, lat, lng) {
+    function addDraggableMarker(map, behavior, lat, lng, title) {
         var marker = new H.map.Marker(
             { lat: lat, lng: lng },
             {
@@ -245,7 +244,9 @@
         }
         },
         false
-    );}
+    );
+    document.getElementById("address").value = title;
+    }
 
     function getAddressData(longLat) {
         // Specify the API endpoint for user data
