@@ -29,7 +29,7 @@
             position: absolute;
             top: 100px;
             left: 20px;
-            width: 65%;
+            width: 80%;
             height: 35px;
             padding: 5px;
             margin-left: 17px;
@@ -64,16 +64,36 @@
         #list {
             cursor: pointer;
         }
+
+        .container {
+            height: 100px;
+            position: relative;
+            border: 3px solid green;
+        }
+
+        .vertical-center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            width: 50%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
     </style>
     <title>Geocoding Demo</title>
 </head>
 
 <body>
-    <div style="height: 100vh; width: 100vw" id="mapContainer" class="container-1">
+    <div style="height: 60vh; width: 100vw" id="mapContainer" class="container-1">
         <input placeholder="Search for a Place or an Address." type="text" name="search" id="search"
             value="Jakarta, Indonesia" autocomplete="off" onkeyup="autosuggest(this)" autofocus />
         <div class="dropdown">
             <ul id="list"></ul>
+        </div>
+    </div>
+    <div class="container">
+        <div>
+            <input type="text" id="address" name="address" class="vertical-center">
         </div>
     </div>
 </body>
@@ -201,6 +221,8 @@
             if (target instanceof H.map.Marker) {
                 behavior.enable();
                 localStorage.setItem('longLat', Object.values(target.im))
+                getAddressData(localStorage.getItem("longLat"));
+                localStorage.clear();
             }
         },
         false
@@ -223,7 +245,27 @@
         }
         },
         false
-    );
+    );}
+
+    function getAddressData(longLat) {
+        // Specify the API endpoint for user data
+        const apiUrl = 'https://revgeocode.search.hereapi.com/v1/revgeocode?at=' + longLat + '&lang=en-US&apiKey=nLuTuw0wCNuYmF1hTkf_guE8qp91EU7Xo95nUy3QM8I';
+
+        // Make a GET request using the Fetch API
+        fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+            })
+            .then(addressData => {
+                // Process the retrieved user data
+                document.getElementById("address").value = addressData.items[0].title;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 </script>
 
