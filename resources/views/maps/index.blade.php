@@ -139,7 +139,7 @@
       let searchString = e.value;
       if (searchString != "") {
         fetch(
-          `https://autosuggest.search.hereapi.com/v1/autosuggest?apiKey=${personalApiKey}&at=33.738045,73.084488&limit=5&resultType=city&q=${searchString}&lang=en-US`
+          `https://autosuggest.search.hereapi.com/v1/autosuggest?apiKey=${personalApiKey}&at=33.738045,73.084488&limit=5&resultType=city&q=${searchString}&lang=id-ID`
         )
           .then((res) => res.json())
           .then((json) => {
@@ -250,7 +250,7 @@
 
     function getAddressData(longLat) {
         // Specify the API endpoint for user data
-        const apiUrl = 'https://revgeocode.search.hereapi.com/v1/revgeocode?at=' + longLat + '&lang=en-US&apiKey=nLuTuw0wCNuYmF1hTkf_guE8qp91EU7Xo95nUy3QM8I';
+        const apiUrl = 'https://revgeocode.search.hereapi.com/v1/revgeocode?at=' + longLat + '&lang=id-ID&apiKey=nLuTuw0wCNuYmF1hTkf_guE8qp91EU7Xo95nUy3QM8I';
 
         // Make a GET request using the Fetch API
         fetch(apiUrl)
