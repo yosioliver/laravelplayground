@@ -75,7 +75,7 @@
             margin: 0;
             position: absolute;
             top: 50%;
-            width: 50%;
+            width: 96%;
             -ms-transform: translateY(-50%);
             transform: translateY(-50%);
         }
