@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Order::class, 'order_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Payment::class, 'order_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('snap_token')->nullable();
             $table->string('status', 32)->default('pending');
             $table->dateTime('expired_at')->nullable();
