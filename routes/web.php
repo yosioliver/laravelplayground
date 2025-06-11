@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\GosendPartnerController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\MapsController;
 use App\Http\Controllers\PaymentController;
@@ -21,3 +22,5 @@ Route::get('payment-success/{transactionId}', [PaymentController::class, 'showPa
 Route::get('send-wa', [WhatsappController::class, 'sendWa'])->name('sendWa');
 
 Route::get('maps', [MapsController::class, 'show'])->name('show');
+
+Route::get('test-gosend', [GosendPartnerController::class, 'hitApi'])->name('test-gosend');
