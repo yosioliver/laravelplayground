@@ -53,4 +53,15 @@ class GosendPartnerController extends Controller
             ])->json();
         return dd($response['orderNo']);
     }
+
+    public function hitApiEstimateGet()
+    {
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Client-ID' => 'mukjayo-engine',
+            'Pass-Key' => '00c69441621e6636ebef656bd055e3bf35d9293252843fcdf5461957b6e57e3d'
+        ])->get('https://integration-kilat-api.gojekapi.com/gokilat/v10/calculate/price?origin=-6.254199%2C106.801546&destination=-6.199508%2C106.832607',
+            )->json();
+        return dd($response['Instant']['price']['total_price']);
+    }
 }

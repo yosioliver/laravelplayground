@@ -25,3 +25,4 @@ Route::get('maps', [MapsController::class, 'show'])->name('show');
 
 Route::get('test-gosend-get', [GosendPartnerController::class, 'hitApiGet'])->name('test-gosend-get');
 Route::get('test-gosend-post', [GosendPartnerController::class, 'hitApiPost'])->name('test-gosend-post');
+Route::get('test-gosendestimate-get', [GosendPartnerController::class, 'hitApiEstimateGet'])->name('test-gosendestimate-get');
