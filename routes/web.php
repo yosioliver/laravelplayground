@@ -23,4 +23,5 @@ Route::get('send-wa', [WhatsappController::class, 'sendWa'])->name('sendWa');
 
 Route::get('maps', [MapsController::class, 'show'])->name('show');
 
-Route::get('test-gosend', [GosendPartnerController::class, 'hitApi'])->name('test-gosend');
+Route::get('test-gosend-get', [GosendPartnerController::class, 'hitApiGet'])->name('test-gosend-get');
+Route::get('test-gosend-post', [GosendPartnerController::class, 'hitApiPost'])->name('test-gosend-post');
